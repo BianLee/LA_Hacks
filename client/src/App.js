@@ -1,15 +1,42 @@
-import React from "react"
-
+import React, { useRef, useEffect, useState } from "react";
+import SignIn from "./signin"
+import firebase from "./firebaseApp.js"
 function App() {
-  return (
-    <>
-      <div class="grid grid-cols-4 gap-4">
-  <div>01</div>
+  const [user, setUser] = useState(localStorage.getItem("user"));
+  const authListener = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // clearInputs();
+        setUser(user);
+        localStorage.setItem("user", user);
+        console.log(user.uid);
+      } else {
+        setUser("");
+      }
+    });
+  };
 
-  <div>09</div>
-</div>
-    </>
-  );
+  const handleLogout = () => {
+    firebase.auth().signOut();
+    localStorage.clear();
+    localStorage.setItem("user", "");
+  };
+
+  useEffect(() => {
+    authListener();
+  }, []);
+
+  if (user) {
+    return (
+      <><h1>Signed In</h1></>
+    );
+  } else {
+    return (
+      <>
+        <SignIn/>
+      </>
+    )
+  }
 }
 
 export default App;
