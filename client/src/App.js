@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import SignIn from "./signin"
 import firebase from "./firebaseApp.js"
+import Playground from "./playground.js"
+
 function App() {
   const [user, setUser] = useState(localStorage.getItem("user"));
   const authListener = () => {
@@ -29,8 +31,13 @@ function App() {
 
   if (user) {
     return (
-      <><h1>Signed In</h1>
-      <button onClick={handleLogout}>Log Out</button>
+<>
+      <div className="my-5 mx-1">
+
+   <button class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded" onClick={handleLogout}>Log Out</button>
+
+      </div>
+      <Playground/> 
     </>
     );
   } else {
