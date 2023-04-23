@@ -9,9 +9,15 @@ const SignIn = () => {
   const [uid, setUid] = useState("");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailTwo, setEmailTwo] = useState('');
+  const [passwordTwo, setPasswordTwo] = useState('');
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
+
+  const options=["SignUp", "SignIn"]
+  const [selectedOption, setSelectedOption] = useState(options[0].value);
+
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -26,7 +32,7 @@ const SignIn = () => {
     setEmailError("");
     firebaseApp
       .auth()
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(emailTwo, passwordTwo)
       .then(function (data) {
         console.log("uid", data.user.uid);
         /* 
@@ -40,7 +46,7 @@ const SignIn = () => {
         */ 
        const userPost = {
         uid: data.user.uid,
-        email: email, 
+        email: emailTwo, 
       }; 
       console.log(userPost);
       axios
@@ -71,16 +77,35 @@ const SignIn = () => {
   return (
     <div>
     <center>
-        <br/>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}  class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 text-gray-700 leading-tight" placeholder="Email"/>
+     <div className="w-1/4">
+        <select
+          className="w-full p-2 border-2 rounded-lg"
+          value={selectedOption}
+          onChange={e => setSelectedOption(e.target.value)}>
+        
+          <option key="SignUp" value="SignUp">Sign Up</option>
+          <option key="SignIn" value="SignIn">Sign In</option>
+        </select>
+        </div>
+        {selectedOption == "SignIn" ? <>
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}  class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 text-gray-700 leading-tight" placeholder="Email"/>
           <br/>
           <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} type="password" class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 my-2 text-gray-700 leading-tight" placeholder="Password"/>
           <br/><button type="submit" onClick={handleSignIn}>Sign In</button>
-        <br/><hr/><br/>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}  class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 text-gray-700 leading-tight" placeholder="Email"/>
+
+        </> : <>
+        <input type="text" value={emailTwo} onChange={(e) => setEmailTwo(e.target.value)}  class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 text-gray-700 leading-tight" placeholder="Email"/>
           <br/>
-          <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} type="password" class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 my-2 text-gray-700 leading-tight" placeholder="Password"/>
+          <input type="text" value={passwordTwo} onChange={(e) => setPasswordTwo(e.target.value)} type="password" class="bg-gray-200 mx-1 appearance-none border-2 border-gray-200 rounded w-1/3 py-2 px-4 my-2 text-gray-700 leading-tight" placeholder="Password"/>
           <br/><button type="submit" onClick={handleSignUp}>Sign Up</button>
+        </>}
+
+
+
+        
+
+
+       
 
       </center>
     </div>
