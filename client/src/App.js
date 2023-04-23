@@ -22,19 +22,22 @@ function App() {
     localStorage.setItem("user", "");
   };
 
+  
   useEffect(() => {
     authListener();
   }, []);
 
   if (user) {
     return (
-      <><h1>Signed In</h1></>
+      <><h1>Signed In</h1>
+      <button onClick={handleLogout}>Log Out</button>
+    </>
     );
   } else {
     return (
       <>
         <SignIn/>
-      </>
+        </>
     )
   }
 }
